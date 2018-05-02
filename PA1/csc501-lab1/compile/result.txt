@@ -1,0 +1,20 @@
+pcibios_init : PCI BIOS revision 2.10 entry at 0xfd482
+pci_init: PCI BIOS initialization succeeded
+
+
+Xinu Version (CSC501 1-2017 base) #79 (skatta3@vclv99-110.hpc) Mon Feb 5 04:38:52 EST 2018
+
+16777216 bytes real mem
+91311 bytes Xinu code
+clock enabled
+Please Input:
+2
+Get 2
+process 49, epoch value = 0 	process 49, epoch value = 35 	process 49, epoch value = 35 	MMprocess 49, epoch value = 35 	CCCCCCCCprocess 46, epoch value = 182 	CCCCCCCprocess 46, epoch value = 221 	CCCCCCCCprocess 46, epoch value = 240 	CCCCCCCprocess 46, epoch value = 249 	CCCCCCCCprocess 46, epoch value = 253 	CCCCCCCprocess 46, epoch value = 256 	CCCCCprocess 46, epoch value = 257 	BBBBBBBBBBprocess 47, epoch value = 257 	BBBBBprocess 47, epoch value = 118 	BBBBprocess 47, epoch value = 118 	BBBBBprocess 47, epoch value = 118 	BBBBBprocess 47, epoch value = 118 	BBBBprocess 47, epoch value = 118 	BBBBBBprocess 47, epoch value = 118 	BBBBprocess 47, epoch value = 118 	BBBBBprocess 47, epoch value = 118 	BBprocess 47, epoch value = 118 	MMMprocess 49, epoch value = 118 	AAAprocess 48, epoch value = 49 	MMMprocess 49, epoch value = 45 	Mprocess 49, epoch value = 42 	AAprocess 48, epoch value = 46 	MMMprocess 49, epoch value = 45 	Mprocess 49, epoch value = 42 	AAprocess 48, epoch value = 46 	MMMprocess 49, epoch value = 45 	MMprocess 49, epoch value = 42 	AAprocess 48, epoch value = 46 	QEMU 2.0.0 monitor - type 'help' for more information
+(qemu) MMprocess 49, epoch value = 45 	MMprocess 49, epoch value = 42 	AAAprocess 48, epoch value = 46 	MMprocess 49, epoch value = 45 	MMprocess 49, epoch value = 42 	AAprocess 48, epoch value = 46 	MMprocess 49, epoch value = 45 	MMprocess 49, epoch value = 42 	AAprocess 48, epoch value = 46 	MMMprocess 49, epoch value = 45 	MMprocess 49, epoch value = 42 	AAprocess 48, epoch value = 46 	MMprocess 49, epoch value = 45 	MMprocess 49, epoch value = 42 	AAprocess 48, epoch value = 46 	MMMMprocess 49, epoch value = 45 	Mprocess 49, epoch value = 42 	AAprocess 48, epoch value = 46 	MMMprocess 49, epoch value = 45 	MMprocess 49, epoch value = 42 	AAprocess 48, epoch value = 46 	M
+process 49, epoch value = 45 	AAprocess 48, epoch value = 45 	Aprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	A
+(qemu) process 48, epoch value = 15 	AAprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	AAprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	AAprocess 48, epoch value = 15 	AAprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	AAprocess 48, epoch value = 15 	Aprocess 48, epoch value = 15 	
+
+All user processes have completed.
+
+process 48, epoch value = 15 	q[K

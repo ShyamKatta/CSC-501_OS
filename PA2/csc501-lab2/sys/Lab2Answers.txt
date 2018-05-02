@@ -1,0 +1,86 @@
+Q1-> solution)
+
+a)There are several possible solutions to priority Inversion, one such method is priority ceiling.
+
+1-Priority Ceiling - 
+In this, the shared lock(or shared resource) will have its own priority. This priority will be assigned to the process that acquires the lock. This temporary priority will be removed for a process when it releases the lock.
+The process is only allowed to block a resource when it has priority greater than the process priority of the shared lock(or resource)
+
+References - 
+https://msdn.microsoft.com/en-us/library/windows/desktop/ms684831(v=vs.85).aspx
+https://www.youtube.com/watch?v=YTnEQgktjj4&t=96s
+
+2-Random Boosting/ Priority Boositing
+In this kind of scheduling, the low process holding locks are randomly booset untill they release the lock. This kind of scheduling is used in windows operating systems. The priority of the process is reverted to original priority as soon as it exits critical section.
+
+The above scheduler was clearly explained in windows refernce below. 
+Each process has a dynamic priority and if a process is unresponsive for some time. Then the process having the lower dynamic priority is scheduled. Only the process base priority between 0-15 receive dynamic priority boosts. The process dynamic priority is set to base priority initially.
+
+Reference - https://msdn.microsoft.com/en-us/library/windows/desktop/ms684828(v=vs.85).aspx
+
+3-Locking with interruprt disabling- 
+Another possible approach is interrupt disabling, in this kind of execution a waiting process cannot preempt executing process, as preemption requires interrupt.
+This approach will have a lot of issues as interrupt disabling will have several unwanted affects.
+
+Reference - http://cmdlinelinux.blogspot.com/2013/12/priority-inversion-how-to-avoid-it.html
+
+Q1)-> b)
+
+Let us create 3 process a,b,c as shown with priorities 20, 10, 30 as shown below for locks and semaphores.
+
+Locks
+a = create(writer11, 2000, 20, "A", 2, 'A', lck2);
+b = create(reader11, 2000, 10, "B", 2, 'B', lck1);
+c = create(writer11, 2000, 30, "C", 2, 'C', lck1);
+
+Semaphores
+a = create(writer22, 2000, 20, "A", 2, 'A', sem);
+b = create(reader11, 2000, 10, "B", 2, 'B',sem);
+c = create(writer22, 2000, 30, "C", 2, 'C', sem);
+
+resuming them in order b, c, a.
+In normal XINU implementation - 'b' will acquire the lock and later 'c' will resume and wait for the same lock in the queue. A higher priority process 'b' having priority > 'a' priority will pre-empt process B and grab the CPU, where as 'C' which is higher will keep waiting in queue as a dosen't still holds the lock.
+hence the execution output is B,A,C as shown in output.
+
+Where as in case of locks, 'a' inherits the priority of 'c' and thus 'a' will have inhereted priority of 30, thus executing 'b' before 'a' and later 'c' will be executed and finally 'a'. Hence the output B,A,C as shown below.
+
+Later after releasing lock 'a' priority is reverted back to its original priority.
+
+
+Output - , same attached in image file in TMP
+Test priority inheritance with PA2 Lock implementation
+locks implementation
+scheduled b     scheduled a     scheduled c
+BBBBBBBBBB
+Process C, acquired lock at time 10
+
+CCCCCCCCCC
+Process C, released lock at time 10
+Process A, acquired lock at time 10
+
+AAAAAAAAAA
+Process A, released lock at time 10
+
+
+Testing XINU semaphore implementation
+Semaphore implementation
+scheduled b     Process A, acquired semaphore at time 500
+scheduled a     scheduled c
+BBBBBBBBBB
+
+AAAAAAAAAA
+Process C, acquired semaphore at time 510
+Process A, releasing semaphore at time 510
+
+CCCCCCCCCC
+Process C, releasing semaphore at time 520
+Task1 success!
+
+*********************--------------*********************
+
+Q2-> solution) In this kind of usage the issue occurs in buffer_add function. In do_update function a reader can acquire the lock and as the readers lock is not exclusive many readers can access the lock and release. If a writer has acquired the lock then unlocked returns an error(1). Issue here is reader process acquires the reader lock and tries to simulate writer in later code. Due to this the rece condition exist and out put depends on the order of execution of process.
+
+Let us consider the example where there are 2 reader process r1, r2. when there is simultaneous access and say suppose a process is pre-empted after writing the size to buf->leng (code: buf->len += size;). Assume that the other process also writes to the same buf->len (same code: buf->len += size;). This leads to the undesired assignment to buf->len.
+Another issue might, order of storing the output in actual buffer (buf->buf). Say that the reader process r1 entered at time t1 and r2 entered at t2. The order of output in buffer buf->buf is dependent on order of execution. if r1 executed first then buf will have the output as "t1t2". if the premption occurs and t2 writes first then buf->buf will have output "t2t1". Hence the buf->buf is dependent on order of execution which is undesirable for synchronisation.
+
+Other case is if the first reader fails to update, buffer length (buf->len += size) then the previoud reader update the buffer value i.e replaces with a new value t2, in this case the output would be t2. r2 is scheduled first and r2 is prempted before updating buffer length then the value would be t1.	If it do not fail at updating buffer length then the output would be t1t2 or t2t1 as mentioned in above paragraph.

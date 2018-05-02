@@ -1,0 +1,50 @@
+Q1)
+Random scheduler
+Advantages:
+1) Overcame the issue of starvation issue in default Xinu scheduler
+2) Allocation of CPU is solely not based on prioirty but with a probability corresponding  to priority so that atleast minimal priority executes with a probability.
+3) Statistical support of the results prove that the time allocated can be precise to probability corresponding to priority
+
+Disadvantages:
+1) Additional need of random number generator
+2) Accuracy of random number generator. It might be possible that the random number generated will always lead to pickup greater priority process. The accuracy of random number is a question here. 
+3) In extension to above point, this is also contradictory to schedule a lower priority process when we have a higher priority process. Because higher priority process have to wait for a lower priority process which is against the concept of priority.
+4) Cannot be applied to real time os as highest priority process should be executed always.
+5) Process scheduling is unpredicatable.
+
+Linux Scheduler
+Advantages:
+1) Overcame the issue of starvation issue in default Xinu scheduler.
+2) Process is scheduled not solely on priority but goodness. This goodness priority concept preserves both the priority and handles the starvation issue carefully.
+3) Within each epoch all the ready process get to execute based on goodness.
+4) Wait time of a process is considered into account and corresponding goodness is increased.
+
+Disadvantage:
+1) High priority process is not scheduled untill it is present at start of epoch.
+2) If there are too many process, then the scheduling algorithm may occupy considerable amount of time which is undesirable.
+3) additional computation logic overhead.
+4) Cannot be implemented in real time OS systems, as a high priority process cannot wait untill start of next epoch
+
+Round  Robin
+Advantages:
+1) each process will be executed based on priority. High priority process will be scheduled first
+2) easy to understand and implement.
+
+Disadvantage:
+1) low priority process will starve untill all high priority proecess completes CPU utilization.
+
+
+Q2)	Assign 2:3:5 as priorities ratios of process P1, P2, P3.
+For example priorities can be 10,15, 25 or 20, 30, 50 which maintains the ratio 2:3:5.
+
+For N process we need to assign priorities of process in correspoding proportions of their CPU allocation time.
+Example say N=3, P1, P2, P3 have priorities x, y, z
+The priorities should be in ratio x:y:z. 
+Generalized we can assign priorities in ratio x.n , y.n , z.n where n can be any number >1 to get the CPU allocation time in x:y:z ratio.
+
+if we want to allocate P1 40% of CPU time in above example then assign priority x such that
+x/(x+y+z) = 0.4
+
+Q3) In random priority Null process is scheduled only if there are no other process in ready queue other than null process. Null process will always have priority zero and will be picked up only if no other process in ready queue has a priority greater than 0.
+
+In Linux like scheduler, The process having goodness greater than 0 and having highest goodness is picked up. If no process is present then null process is picked. Null process will be the last process to be picked as it will always have a goodness of 0.

@@ -1,0 +1,97 @@
+1. 
+
+	|					|
+	| 	Free memory 	|
+	| 					|
+	|-------------------| -->null process stack base address [0x00fffffc]
+	| 					|
+	|	Null Process	| Process id-0, process name - prnull
+	|		Stack		| -->Stack pointer [00ffff1c]
+	|					| 
+	|					| -->Stack limit [0x00fff000]
+	|-------------------| -->Main process base address [0x00ffeff8]
+	|					|	
+	| 	Main function	| Process id - 49, process name- main
+	|		Stack		| -->Stack pointer [00ffef90]
+	|					| 
+	|					| -->Stack Limit [0x00ffdffc]
+	|-------------------| 
+	|					|
+	| 		Heap		|
+	|-------------------| -->Ebss [0x0002b354]
+	|					|
+	| 		BSS			|
+	|-------------------| -->Edata [0x000216e4]
+	|					|
+	| 		Data 		|
+	|-------------------| -->Etext [0x0001c14c]
+	|					|
+	|		Text		|
+	|-------------------| -->Base address [0x00000000] - given text begins at address 0x0
+	
+	The above address are captured from the printsegaddress() and printprocstks() functions.
+	
+	
+2.
+
+The address of top of stack just before calling function is [0x00ffefc0]
+The address of the top of the stack immediately after function call is [0x00ffefb8]
+Each stack  element occupies 4 bytes and the difference of stack pointers is 8 bytes (0x00ffefc0 - 0x00ffefb8).
+The 2 elements insterted are return address and base pointer of called function.
+The return address is pushed by call instruction and removed by return instruction 
+
+	|---------------|
+	|	Argument 1	| stack pointer just before call instruction is executed [0x00ffefc0]
+	|---------------|
+	|	Return 		|
+	|	Address		|
+	|---------------|
+	|	Saved Base	|
+	| pointer(EBOP)	| Stack pointer after function is called [0x00ffefb8]
+	|---------------|
+	
+3.
+
+Endianess is the order sequence in which bytes are stored when inserted to memory. In Big endian format, the most significant byte is stored first and least significant byte at last.
+Little endian format follows the reverse order, it stores the least significant byte first and most significant byte at the end.
+
+int main ()
+{
+  unsigned int x = 0x0001;
+  char *c = (char*) &x;
+  //printf ("*c is: 0x%x\n", *c);
+  if (c[0] == 1)
+    printf ("Underlying architecture is little endian. \n");
+  else
+     printf ("Underlying architecture is big endian. \n");
+  return 0;
+}
+Reference - http://cs-fundamentals.com/tech-interview/c/c-program-to-check-little-and-big-endian-architecture.php
+			https://www.codeproject.com/Articles/4804/Basic-concepts-on-Endianness
+
+4.
+
+Mov -
+syntax - mov source, destination
+copies source to destination. command can be executed over register/memory to another register/memory. 
+eg - mov %ebp,%eax
+
+Push -
+syntax - push source
+This instruction decrements the stack pointer(adds an element to stack, as the stack grows downward). 
+eg - push %ebp
+
+Pusha -
+This isntruction pushes contents of general purpose registers(primarily for 16 bit registers). The order in which registers are pushed are (ax,cx,dx,bx,sp,bp,si,di).
+
+Pop -
+this operation performs exact opposite to push operation. It deleted  the top element of stack, moves to destination mentioned and increments stack pointer(As stack grows in reverse order).
+syntax - pop destination
+eg - pop %ebp
+
+Popa -
+This instruction performs exact opposite to pusha instruction. This pops elements from stack onto general purpose registers in exact reverse order as that of pusha. The prder is DI, SI, BP, BX, DX, CX, AX.
+
+5.
+
+No. In stack frame, local variables are generally stored below the top of te stack, but in task 3 when we declare 2 variables and check them, they are stored at 2,3 locations near base pointer, navigating through stack pointer they are stored at 6-7 th locations from stack pointer. Reason being, buffers are stored for temporary data after variables in stack 
