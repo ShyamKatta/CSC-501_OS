@@ -24,7 +24,7 @@ Demand paging is a method of mapping a large address space into a relatively sma
 From this point on, only the details of this project are discussed. It is assumed that you have read the Intel documents and are comfortable with paging concepts and the Intel specific details.
 
 The goal of this project is to implement the following system calls and their supporting infrastructure.
-System Calls
+* System Calls
 ```
 SYSCALL xmmap (int virtpage, bsd_t source, int npages)
 ```
@@ -52,3 +52,15 @@ This function will be used to set the page replacement policy to Second-Chance (
 SYSCALL vfreemem (block_ptr, int size_in_bytes)
 ```
 You will implement a corresponding vfreemem() for vgetmem() call. vfreemem() takes two parameters and returns OK or SYSERR. The two parameters are similar to those of the original freemem() in Xinu. The type of the first parameter block_ptr depends on your own implementation. 
+
+* Backing Store Emulation
+In the implementation, you need to "steal" physical memory frames 2048 - 4095 (take a close look at sys/i386.c, and pay attention to the variables npages and maxaddr). As a result, this portion of memory will not be used for other purposes. You can assume that our grading program will not modify this part of memory. 
+ 
+* The Interrupt Service Routine (ISR)
+ As you know, a page fault triggers an interrupt 14. When an interrupt occurs the machine pushes CS:IP and then an error code (see Intel Volume III chapter 5) 
+ 
+* Faults and Replacement Policies
+
+* Page Replacement Policies
+
+Detailed description in Project page
